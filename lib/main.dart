@@ -344,25 +344,25 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
         setState(() {
           locked = newLockState;
         });
-        // Always write lock state to Arduino for two-way sync
         await _bluetoothService.writeLockState(newLockState);
-        // Optionally, send breaker command if needed for your protocol
-        //_sendArduinoCommand();
       },
       child: Container(
-        width: 70,
-        height: 70,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 8,
+        ), // Smaller, tighter padding
         decoration: BoxDecoration(
           color: locked ? Colors.orange.shade700 : Colors.blue.shade700,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.black, width: 4),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black, width: 2),
         ),
-        child: Center(
-          child: Icon(
-            locked ? Icons.lock : Icons.lock_open,
-            color: Colors.white,
-            size: 38,
-          ),
+        child: Text(
+          locked ? 'LOCKED' : 'UNLOCKED',
+          style: const TextStyle(
+            fontSize: 22,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ), // Black text, smaller font
         ),
       ),
     );
@@ -498,20 +498,6 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
                         inactiveThumbColor: Colors.grey,
                         inactiveTrackColor: Colors.grey[300],
                       ),
-                      if (forceSwitchUp || disableSwitch)
-                        Container(
-                          width: 48,
-                          height: 48,
-                          alignment: Alignment.center,
-                          child: Transform.rotate(
-                            angle: 1.5708, // 90 degrees in radians
-                            child: Icon(
-                              Icons.lock,
-                              color: Colors.orange,
-                              size: 32,
-                            ),
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -555,12 +541,7 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
             ),
             if (locked && !breakerOpen)
               Positioned.fill(
-                child: Container(
-                  color: Colors.black.withOpacity(0.18),
-                  child: Center(
-                    child: Icon(Icons.lock, color: Colors.orange, size: 38),
-                  ),
-                ),
+                child: Container(color: Colors.black.withOpacity(0.18)),
               ),
           ],
         ),
@@ -609,12 +590,7 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
                 ),
               if (locked && breakerOpen)
                 Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.18),
-                    child: Center(
-                      child: Icon(Icons.lock, color: Colors.orange, size: 38),
-                    ),
-                  ),
+                  child: Container(color: Colors.black.withOpacity(0.18)),
                 ),
             ],
           ),
@@ -670,8 +646,6 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
         const SizedBox(height: 24),
         Center(child: _buildSwitchContainer(isPortrait: true)),
         const SizedBox(height: 20),
-        Center(child: _buildLockButton()),
-        const SizedBox(height: 20),
         Center(
           child: _buildControlButtons(
             openColor,
@@ -680,6 +654,8 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
             closeInactive,
           ),
         ),
+        const SizedBox(height: 20),
+        Center(child: _buildLockButton()),
       ],
     );
   }
@@ -782,20 +758,6 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
                                   inactiveThumbColor: Colors.grey,
                                   inactiveTrackColor: Colors.grey[300],
                                 ),
-                                if (locked && !breakerOpen)
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    alignment: Alignment.center,
-                                    child: Transform.rotate(
-                                      angle: 1.5708, // 90 degrees in radians
-                                      child: Icon(
-                                        Icons.lock,
-                                        color: Colors.orange,
-                                        size: 32,
-                                      ),
-                                    ),
-                                  ),
                               ],
                             ),
                           ),
@@ -850,13 +812,6 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
                           Positioned.fill(
                             child: Container(
                               color: Colors.black.withOpacity(0.18),
-                              child: Center(
-                                child: Icon(
-                                  Icons.lock,
-                                  color: Colors.orange,
-                                  size: 32,
-                                ),
-                              ),
                             ),
                           ),
                       ],
@@ -927,13 +882,6 @@ class _BreakerControlScreenState extends State<BreakerControlScreen> {
                           Positioned.fill(
                             child: Container(
                               color: Colors.black.withOpacity(0.18),
-                              child: Center(
-                                child: Icon(
-                                  Icons.lock,
-                                  color: Colors.orange,
-                                  size: 24,
-                                ),
-                              ),
                             ),
                           ),
                       ],
